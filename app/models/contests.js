@@ -13,7 +13,7 @@ var contestSchema = new Schema({
     matches: [{
         type: Schema.Types.ObjectId,
         ref: "matches"
-    }],
+    }]
 });
 
 module.exports = mongoose.model("contests", contestSchema);

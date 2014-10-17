@@ -9,10 +9,7 @@ dbConnect.connect();
 app.use("/admin", adminRouter);
 
 app.use(function(req, res, next) {
-    var err = {
-        status: 404,
-        message: "Page not found"
-    } 
+    var err = { status: 404, message: "Page not found" };
     return next(err);
 });
 
