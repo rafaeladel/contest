@@ -13,7 +13,7 @@ var usersSchema = new Schema({
     matches: [{
         type: Schema.Types.ObjectId,
         ref: "matches"
-    }],
+    }]
 });
 
 module.exports = mongoose.model("users", usersSchema);

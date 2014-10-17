@@ -2,7 +2,7 @@
   "name": "TheBigContest",
   "version": "1.0.0",
   "description": "Contest management app",
-  "main": "server.js",
+  "main": "app/app.js",
   "dependencies": {
     "lodash": "^2.4.1",
     "body-parser": "^1.9.0",
@@ -13,11 +13,11 @@
   },
   "devDependencies": {
     "chai": "^1.9.2",
-    "superagent": "^0.20.0"
+    "supertest": "^0.14.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",

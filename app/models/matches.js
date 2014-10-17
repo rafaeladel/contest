@@ -9,7 +9,7 @@ var matchesSchema = new Schema({
     users: [{
         type: Schema.Types.ObjectId,
         ref: "users"
-    }],
+    }]
 });
 
-module.exports = mongoose.model("matchess", matchesSchema);
+module.exports = mongoose.model("matches", matchesSchema);
