@@ -2,10 +2,14 @@ var mongoose = require("mongoose"),
     Schema = mongoose.Schema;
 
 var matchesSchema = new Schema({
-    questions: [{
+    title: {
+        type: String,
+        required: true
+    },
+    contest: {
         type: Schema.Types.ObjectId,
-        ref: "questions"
-    }],
+        ref: "contests"
+    },
     users: [{
         type: Schema.Types.ObjectId,
         ref: "users"

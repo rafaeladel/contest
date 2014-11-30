@@ -37,7 +37,7 @@ function listUsers(req, res, next) {
 function indexUsers(req, res, next) {
     var userId = req.params.id || null;
     if(!userId) next(errorHandler(404, "Not found"));
-    User.find({ _id: userId }, function(err, user) {
+    User.findOne({ _id: userId }, function(err, user) {
         if(err) return next(err);
         if(user.length == 0) return next(errorHandler(404, "User not found"));
         res.json(user);
@@ -69,6 +69,8 @@ function createUsers(req, res, next) {
  * @param next
  */
 function updateUsers(req, res, next) {
+    console.log(req.body);
+
     var userId = req.params.id || null;
     if(!userId) next(errorHandler(404, "Not found"));
     User.findOne({ _id: userId }, function(err, user) {

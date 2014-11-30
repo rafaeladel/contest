@@ -1,0 +1,20 @@
+<h3>{{ contest.title }}</h3>
+
+<p style="display: inline-block">Questions</p> <a href="/admin/questions/add">Add question</a>
+<fieldset>
+    <legend>Questions</legend>
+    <label ng-repeat="question in questions" style="display: block;">
+        <input type="checkbox"/>
+        <span>{{ question.question }}</span>
+    </label>
+</fieldset>
+
+<p style="display: inline-block">Matches</p> <a href="/admin/contests/{{ contest._id }}/matches/add">Add match</a>
+<fieldset>
+    <legend>Matches</legend>
+    <ul ng-repeat="match in contest.matches">
+        <li>{{ match.title }}</li>
+    </ul>
+</fieldset>
+
+<a href="/admin/contests">Back</a>

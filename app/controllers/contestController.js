@@ -21,7 +21,7 @@ module.exports = contestController();
  * @param next
  */
 function listContests(req, res, next) {
-    Contest.find({}, function(err, contests) {
+    Contest.find({}).populate("matches").exec(function(err, contests) {
         if(err) return next(err);
         res.json(contests);
     });
@@ -37,9 +37,10 @@ function listContests(req, res, next) {
 function indexContests(req, res, next) {
     var contestId = req.params.id || null;
     if(!contestId) next(errorHandler(404, "Not found"));
-    Contest.find({ _id: contestId }, function(err, contest) {
+    Contest.findOne({ _id: contestId }).populate("matches").exec(function(err, contest){
         if(err) return next(err);
-        if(contest.length == 0) return next(errorHandler(404, "Contest not found"));
+        if(!contest) return next(errorHandler(404, "Contest not found"));
+        contest.populate("matches");
         res.json(contest);
     });
 }
@@ -53,11 +54,14 @@ function indexContests(req, res, next) {
  */
 function createContests(req, res, next) {
     Contest.create(req.body, function(err, contest) {
-        if(err) return next(err);
-        res.json({
-            success: true,
-            contest: contest
-        });
+         if(err) {
+            res.json(err);
+        } else {
+            res.json({
+                success: true,
+                contest: contest
+            });
+        }
     });
 }
 

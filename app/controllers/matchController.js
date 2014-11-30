@@ -1,4 +1,5 @@
 var Match = require("../models/matches"),
+    Contest = require("../models/contests"),
     errorHandler = require("../util/errorHandler");
 
 function matchController() {
@@ -52,11 +53,18 @@ function indexMatches(req, res, next) {
  * @param next
  */
 function createMatches(req, res, next) {
-    Match.create(req.body, function(err, match) {
-        if(err) return next(err);
-        res.json({
-            success: true,
-            match: match
+    Contest.findOne({ _id: req.params.contest_id }, function(err, contest) {
+        var match = new Match({ title: req.body.title, contest: contest._id });
+        match.save(function(err, match) {
+            if(err) return next(err);
+            contest.matches.push(match);
+            contest.save(function(err, contest) {
+                res.json({
+                    success: true,
+                    match: match
+                });
+            });
+
         });
     });
 }

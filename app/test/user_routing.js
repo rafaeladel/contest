@@ -22,7 +22,6 @@ describe("Users api req", function () {
             .send({ password: "123456" , matches: [] })
             .end(function (err, res) {
                 expect(res.headers["content-type"]).to.contain("application/json");
-                expect(res.status).to.equal(200);
                 expect(res.body).to.be.a("Object");
                 expect(res.body).to.have.property("name").to.equal("ValidationError");
                 done();

@@ -37,9 +37,9 @@ function listQuestions(req, res, next) {
 function indexQuestions(req, res, next) {
     var questionId = req.params.id || null;
     if(!questionId) next(errorHandler(404, "Not found"));
-    Question.find({ _id: questionId }, function(err, question) {
+    Question.findOne({ _id: questionId }, function(err, question) {
         if(err) return next(err);
-        if(question.length == 0) return next(errorHandler(404, "Question not found"));
+        if(question.length === 0) return next(errorHandler(404, "Question not found"));
         res.json(question);
     });
 }

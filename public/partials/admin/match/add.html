@@ -1,0 +1,7 @@
+<form novalidate ng-submit="addMatch(match)" name="match_form" method="post">
+    <input type="text" name="name" ng-model="match.title" placeholder="Title" ng-required="true"/>
+    <br>
+    <input type="submit" value="add" />
+</form>
+
+<a href="/admin/contests/{{ contest._id }}">Back</a>

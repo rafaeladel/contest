@@ -1,0 +1,9 @@
+<h3>Question:</h3>
+<p>{{ question.question }}</p>
+<ul>
+    <li ng-repeat="answer in question.answers">
+        <span ng-show="answer.is_true">✓</span>
+        <a href="/">{{ answer.content }}</a>
+        <a href="">delete</a>
+    </li>
+</ul>

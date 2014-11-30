@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html ng-app="adminMain">
+    <head>
+        <title>Hello</title>
+        <base href="/admin">
+    </head>
+    <body>
+        <div ng-view></div>
+
+        <script src="../../libs/angular/angular.js"></script>
+        <script src="../../libs/angular-route/angular-route.js"></script>
+        <script src="../../libs/angular-resource/angular-resource.js"></script>
+
+        <script src="../../js/admin/adminMain.js"></script>
+
+        <script src="../../js/admin/controllers/main/mainPageController.js"></script>
+        <script src="../../js/admin/controllers/contest/contestsController.js"></script>
+        <script src="../../js/admin/controllers/user/userAdminController.js"></script>
+        <script src="../../js/admin/controllers/question/questionsController.js"></script>
+        <script src="../../js/admin/controllers/matches/matchesController.js"></script>
+
+        <script src="../../js/admin/factories/contestFactory.js"></script>
+        <script src="../../js/admin/factories/questionFactory.js"></script>
+        <script src="../../js/admin/factories/matchFactory.js"></script>
+        <script src="../../js/admin/factories/userFactory.js"></script>
+
+        <script src="../../js/admin/directives/question/questionType.js"></script>
+
+        <script src="../../js/util/config/rest_url.js"></script>
+    </body>
+</html>

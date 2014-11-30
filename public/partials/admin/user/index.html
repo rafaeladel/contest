@@ -1,0 +1,16 @@
+<h3>{{ user.username }}</h3>
+
+<p style="display: inline-block">Contests</p>
+<select ng-model="selected_contest" ng-options="contest.title for contest in contests"></select>
+
+<div ng-show="selected_matches.length == 0">No matches</div>
+
+<form ng-submit="assignMatch(user.matches)">
+    <ul ng-show="selected_matches.length > 0">
+       <li ng-repeat="match in selected_matches track by $index">
+           <input  type="checkbox" id="{{ match._id }}" ng-model="user.matches[match._id]" ng-true-value="{{ match._id }}"/>
+           <label for="{{ match._id }}">{{ match.title }}</label>
+       </li>
+    </ul>
+    <input type="submit" value="submit" name="submit" />
+</form>

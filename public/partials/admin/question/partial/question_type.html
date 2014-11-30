@@ -1,0 +1,33 @@
+<input type="radio" id="mcq_q" name="question_type" ng-model="question.questionType" value="0" />
+<label for="mcq_q">MCQ</label>
+<input type="radio" id="tf_q" name="question_type" ng-model="question.questionType" value="1"/>
+<label for="tf_q">True or false</label>
+
+<div ng-show="show_mcq">
+    <ul>
+        <li>
+            <input type="radio" name="mcq_correct" ng-model="question.answers[0].is_true"  value="true"/>
+            <input type="text" ng-model="question.answers[0].content" />
+        </li>
+        <li>
+            <input type="radio"  name="mcq_correct" ng-model="question.answers[1].is_true" value="true"/>
+            <input type="text" ng-model="question.answers[1].content" />
+        </li>
+        <li>
+            <input type="radio" name="mcq_correct" ng-model="question.answers[2].is_true" value="true"/>
+            <input type="text" ng-model="question.answers[2].content"/>
+        </li>
+    </ul>
+</div>
+<div ng-show="show_tf">
+    <ul>
+        <li>
+            <input type="radio" id="tf_t" name="tf_correct" ng-model="question.answers[0].is_true" value="true">
+            <label for="tf_t">True</label>
+        </li>
+        <li>
+            <input type="radio" id="tf_f" name="tf_correct" ng-model="question.answers[1].is_true" value="true">
+            <label for="tf_f">False</label>
+        </li>
+    </ul>
+</div>

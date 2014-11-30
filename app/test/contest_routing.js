@@ -22,7 +22,6 @@ describe("Contests api req", function () {
             .send({ questions: [], matches: [] })
             .end(function (err, res) {
                 expect(res.headers["content-type"]).to.contain("application/json");
-                expect(res.status).to.equal(200);
                 expect(res.body).to.be.a("Object");
                 expect(res.body).to.have.property("name").to.equal("ValidationError");
                 done();
@@ -39,6 +38,17 @@ describe("Contests api req", function () {
                 expect(res.body.success).to.equal(true);
                 expect(res.body).to.have.property("contest").to.have.property("title").to.equal("rafael");
                 tempContest_id = res.body.contest._id;
+                done();
+            });
+    });
+
+    it("Should return one contest", function(done) {
+        request(app)
+            .get("/api/contests/"+tempContest_id)
+            .end(function(err, res) {
+                expect(res.headers["content-type"]).to.contain("application/json");
+                expect(res.status).to.equal(200);
+                expect(res.body).to.be.a("Object");
                 done();
             });
     });

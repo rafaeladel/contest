@@ -1,0 +1,12 @@
+<h3>Add question</h3>
+<form novalidate ng-submit="addQuestion(question)" name="question_form" method="post">
+    <textarea ng-model="question.question" ng-required="true" placeholder="Question content">
+    </textarea>
+    <br>
+
+    <question-type question="question"></question-type>
+    <br>
+    <input type="submit" value="add" />
+</form>
+
+<a href="/admin/questions/">Back</a>
