@@ -17,6 +17,7 @@ var urls = {
         list: "/api/questions",
         index: "/api/questions/:id",
         add: "/api/questions",
+        addToContest: "/api/contests/:contest_id/questions/add",
         edit: "/api/questions/:id",
         delete: "/api/questions/:id"
     },
@@ -28,4 +29,4 @@ var urls = {
         delete: "/api/users/:id"
     }
 };
-angular.module("adminMain").constant("restUrls", urls);
+angular.module("sharedMain").constant("restUrls", urls);

@@ -8,4 +8,4 @@ var contestFactory = function($resource, restUrls) {
     });
 };
 
-angular.module("adminMain").factory("Contest", ["$resource", "restUrls", contestFactory]);
+angular.module("sharedMain").factory("Contest", ["$resource", "restUrls", contestFactory]);

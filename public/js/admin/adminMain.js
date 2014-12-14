@@ -1,4 +1,4 @@
-angular.module("adminMain", ["ngRoute", "ngResource"])
+angular.module("adminMain", ["sharedMain", "ngRoute", "ngResource", "checklist-model"])
     .config(["$routeProvider", "$locationProvider", function($routeProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
 
@@ -55,6 +55,7 @@ angular.module("adminMain", ["ngRoute", "ngResource"])
                 controller: "usersListController",
                 templateUrl: "../../partials/admin/user/list.html"
             })
+
             .otherwise({
                 redirectTo: "/admin"
             })

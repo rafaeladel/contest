@@ -7,6 +7,7 @@ function contestController() {
         index: indexContests,
         create: createContests,
         update: updateContests,
+        manageQuestions: manageQuestions,
         delete: deleteContests
     };
 }
@@ -21,8 +22,8 @@ module.exports = contestController();
  * @param next
  */
 function listContests(req, res, next) {
-    Contest.find({}).populate("matches").exec(function(err, contests) {
-        if(err) return next(err);
+    Contest.find({}).populate("questions matches").exec(function (err, contests) {
+        if (err) return next(err);
         res.json(contests);
     });
 }
@@ -36,11 +37,10 @@ function listContests(req, res, next) {
  */
 function indexContests(req, res, next) {
     var contestId = req.params.id || null;
-    if(!contestId) next(errorHandler(404, "Not found"));
-    Contest.findOne({ _id: contestId }).populate("matches").exec(function(err, contest){
-        if(err) return next(err);
-        if(!contest) return next(errorHandler(404, "Contest not found"));
-        contest.populate("matches");
+    if (!contestId) next(errorHandler(404, "Not found"));
+    Contest.findOne({_id: contestId}).populate("questions matches").exec(function (err, contest) {
+        if (err) return next(err);
+        if (!contest) return next(errorHandler(404, "Contest not found"));
         res.json(contest);
     });
 }
@@ -53,8 +53,8 @@ function indexContests(req, res, next) {
  * @param next
  */
 function createContests(req, res, next) {
-    Contest.create(req.body, function(err, contest) {
-         if(err) {
+    Contest.create(req.body, function (err, contest) {
+        if (err) {
             res.json(err);
         } else {
             res.json({
@@ -74,21 +74,39 @@ function createContests(req, res, next) {
  */
 function updateContests(req, res, next) {
     var contestId = req.params.id || null;
-    if(!contestId) next(errorHandler(404, "Not found"));
-    Contest.findOne({ _id: contestId }, function(err, contest) {
-        if(err) return next(err);
-        if(contest.length == 0) return next(errorHandler(404, "Contest not found"));
-        for(var member in req.body) {
+    if (!contestId) next(errorHandler(404, "Not found"));
+    Contest.findOne({_id: contestId}, function (err, contest) {
+        if (err) return next(err);
+        if (contest.length == 0) return next(errorHandler(404, "Contest not found"));
+        for (var member in req.body) {
             contest[member] = req.body[member];
         }
-        contest.save(function(err) {
-            if(err) return next(err);
+        contest.save(function (err) {
+            if (err) return next(err);
             res.json({
                 success: true,
                 contest: contest
             });
         })
     });
+}
+
+
+function manageQuestions(req, res, next) {
+    Contest.findOne({_id: req.params.contest_id}, function (err, contest) {
+        contest.questions = [];
+        for (var i = 0; i < req.body.length; i++) {
+            contest.questions.push(req.body[i]._id);
+        }
+        contest.save(function (err, contest) {
+            res.json({
+                success: true,
+                contest: contest
+            });
+        });
+
+    });
+
 }
 
 /**
@@ -100,9 +118,9 @@ function updateContests(req, res, next) {
  */
 function deleteContests(req, res, next) {
     var contestId = req.params.id || null;
-    if(!contestId) next(errorHandler(404, "Not found"));
-    Contest.remove({ _id: contestId }, function(err) {
-        if(err) return next(err);
+    if (!contestId) next(errorHandler(404, "Not found"));
+    Contest.remove({_id: contestId}, function (err) {
+        if (err) return next(err);
         res.json({
             success: true
         });

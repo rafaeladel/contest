@@ -1,0 +1,7 @@
+<h3>{{ match.title }}</h3>
+<ul ng-repeat="user in match.users">
+    <li>{{ user.username }}</li>
+</ul>
+
+<p>Online users: {{ current_count }}/{{ total_count}}</p>
+<button ng-show="current_count == total_count" ng-click="startMatch()">Start</button>

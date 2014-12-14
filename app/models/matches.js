@@ -10,9 +10,21 @@ var matchesSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "contests"
     },
+    stage: {
+        type: Number,
+        default: 0
+    },
+    questions: [{
+        type: Schema.Types.ObjectId,
+        ref: "questions"
+    }],
     users: [{
         type: Schema.Types.ObjectId,
         ref: "users"
+    }],
+    scores: [{
+        type: Schema.Types.ObjectId,
+        ref: "scores"
     }]
 });
 

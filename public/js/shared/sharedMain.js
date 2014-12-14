@@ -1,0 +1,1 @@
+angular.module("sharedMain", ["btford.socket-io"]);

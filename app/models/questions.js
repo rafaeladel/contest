@@ -12,11 +12,7 @@ var questionsSchema = new Schema({
     },
     answers: {
         type: Schema.Types.Mixed
-    },
-    matches: [{
-        type: Schema.Types.ObjectId,
-        ref: "matches"
-    }],
+    }
 });
 
 module.exports = mongoose.model("questions", questionsSchema);

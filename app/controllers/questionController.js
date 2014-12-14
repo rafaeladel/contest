@@ -1,4 +1,5 @@
 var Question = require("../models/questions"),
+    Contest = require("../models/contests"),
     errorHandler = require("../util/errorHandler");
 
 function questionController() {

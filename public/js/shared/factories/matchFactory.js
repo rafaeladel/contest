@@ -1,5 +1,9 @@
 var matchFactory = function($resource, restUrls, $routeParams) {
     return $resource(restUrls.match.index, {}, {
+        update: {
+            url: restUrls.match.edit,
+            method: "PUT"
+        },
         save: {
             url: restUrls.match.add,
             method: "POST",
@@ -11,4 +15,4 @@ var matchFactory = function($resource, restUrls, $routeParams) {
     });
 };
 
-angular.module("adminMain").factory("Match", ["$resource", "restUrls", "$routeParams", matchFactory]);
+angular.module("sharedMain").factory("Match", ["$resource", "restUrls", "$routeParams", matchFactory]);

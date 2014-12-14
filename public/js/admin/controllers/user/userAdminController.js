@@ -13,18 +13,15 @@ var userIndexController = function ($scope, User, Contest, $routeParams, $rootSc
         $scope.selected_contest = contests[0];
         
         $scope.$watch("selected_contest", function(newVal, oldVal) {
-            $scope.selected_matches = newVal.matches;
+            $scope.contest_matches = newVal.matches;
         });
     });
 
-    $scope.user_matches[0] = $scope.user.matches;
-    $scope.assignMatch = function (matches) {
-        $scope.user.matches = matches;
-        console.log($scope.user);
-//        User.update({ id: $scope.user._id }, $scope.user, function(data) {
-//            console.log(data);
-//        });
-    }
+    $scope.assignMatch = function () {
+        User.update({ id: $scope.user._id }, $scope.user, function(data) {
+            $location.path("/admin/users")
+        });
+    };
 
     $rootScope.referer = $location.path();
 };

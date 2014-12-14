@@ -13,7 +13,8 @@ var express = require("express"),
 
 dbConnect.connect();
 
-//app.use(express.static(path.join(__dirname, "../public")));
+
+app.use(express.static(path.join(__dirname, "../public")));
 app.use(bodyParser.json());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -12,4 +12,4 @@ var userFactory = function($resource, restUrls) {
     });
 };
 
-angular.module("adminMain").factory("User", ["$resource", "restUrls", userFactory]);
+angular.module("sharedMain").factory("User", ["$resource", "restUrls", userFactory]);

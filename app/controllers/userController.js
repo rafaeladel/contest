@@ -1,4 +1,5 @@
 var User = require("../models/users"),
+    Match = require("../models/matches"),
     errorHandler = require("../util/errorHandler");
 
 function userController() {
@@ -21,7 +22,7 @@ module.exports = userController();
  * @param next
  */
 function listUsers(req, res, next) {
-    User.find({}, function(err, users) {
+    User.find({}).populate("matches").exec(function(err, users) {
         if(err) return next(err);
         res.json(users);
     });
@@ -37,7 +38,7 @@ function listUsers(req, res, next) {
 function indexUsers(req, res, next) {
     var userId = req.params.id || null;
     if(!userId) next(errorHandler(404, "Not found"));
-    User.findOne({ _id: userId }, function(err, user) {
+    User.findOne({ _id: userId }).populate("matches").exec(function(err, user) {
         if(err) return next(err);
         if(user.length == 0) return next(errorHandler(404, "User not found"));
         res.json(user);
@@ -69,16 +70,33 @@ function createUsers(req, res, next) {
  * @param next
  */
 function updateUsers(req, res, next) {
-    console.log(req.body);
-
     var userId = req.params.id || null;
     if(!userId) next(errorHandler(404, "Not found"));
     User.findOne({ _id: userId }, function(err, user) {
         if(err) return next(err);
         if(user.length == 0) return next(errorHandler(404, "User not found"));
-        for(var member in req.body) {
-            user[member] = req.body[member];
-        }
+        user.username = req.body.username;
+        user.password = req.body.password;
+        user.syncMatches(req.body.matches, function(matches, exMatches) {
+            for(var i =0 ; i < matches.length; i++){
+                Match.findOne({ _id: matches[i]._id }).populate("users").exec(function(err, match) {
+                    if(match != null) {
+                        match.users.push(user._id);
+                        match.save(function (err) {
+                            if (err) return next(err);
+                        });
+                    }
+                });
+            }
+            for(var i =0 ; i < exMatches.length; i++){
+                Match.findOne({ _id: exMatches[i] }).populate("users").exec(function(err, match) {
+                    match.users.pull(user._id);
+                    match.save(function (err) {
+                        if(err) return next(err);
+                    })
+                });
+            }
+        });
         user.save(function(err) {
             if(err) return next(err);
             res.json({

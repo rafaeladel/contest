@@ -1,0 +1,5 @@
+<h2>{{ user.username }}</h2>
+
+<ul ng-repeat="match in user.matches">
+    <li><a ng-href="/user/{{ user._id }}/match/{{ match._id }}">{{ match.title }}</a></li>
+</ul>

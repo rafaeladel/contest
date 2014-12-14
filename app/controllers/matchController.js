@@ -22,7 +22,7 @@ module.exports = matchController();
  * @param next
  */
 function listMatches(req, res, next) {
-    Match.find({}, function(err, matches) {
+    Match.find({}).populate("users").exec(function(err, matches) {
         if(err) return next(err);
         res.json(matches);
     });
@@ -38,7 +38,7 @@ function listMatches(req, res, next) {
 function indexMatches(req, res, next) {
     var matchId = req.params.id || null;
     if(!matchId) next(errorHandler(404, "Not found"));
-    Match.find({ _id: matchId }, function(err, match) {
+    Match.findOne({ _id: matchId }).populate("users questions").exec(function(err, match) {
         if(err) return next(err);
         if(match.length == 0) return next(errorHandler(404, "Match not found"));
         res.json(match);
@@ -53,8 +53,8 @@ function indexMatches(req, res, next) {
  * @param next
  */
 function createMatches(req, res, next) {
-    Contest.findOne({ _id: req.params.contest_id }, function(err, contest) {
-        var match = new Match({ title: req.body.title, contest: contest._id });
+    Contest.findOne({ _id: req.params.contest_id }).populate("questions").exec(function(err, contest) {
+        var match = new Match({ title: req.body.title, contest: contest._id, questions: contest.questions });
         match.save(function(err, match) {
             if(err) return next(err);
             contest.matches.push(match);

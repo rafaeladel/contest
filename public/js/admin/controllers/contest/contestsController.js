@@ -3,12 +3,23 @@ var contestsListController = function($scope, Contest) {
 };
 
 var contestIndexController = function ($scope, Contest, Question, $routeParams, $rootScope, $location) {
-    $scope.contest = Contest.get({
-        id: $routeParams.id
+    Contest.get({ id: $routeParams.id }, function (data) {
+        $scope.contest = data;
+        $scope.selected_questions = [];
+        for(var i = 0; i < data.questions.length ; i++) {
+            $scope.selected_questions.push(data.questions[i]);
+        }
+        $scope.questions = Question.query();
+        $scope.manageQuestions = function (questions) {
+            Question.addToContest({ contest_id: $routeParams.id }, questions, function(data) {
+                $location.path("/admin/contests");
+            });
+        };
     });
-    $scope.questions = Question.query();
+
     $rootScope.referer = $location.path();
 };
+
 var contestAddController = function($scope, Contest, $location) {
     var contest = new Contest();
     $scope.contest = contest;
