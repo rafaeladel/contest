@@ -1,6 +1,7 @@
 var Match = require("../models/matches"),
     Contest = require("../models/contests"),
-    errorHandler = require("../util/errorHandler");
+    errorHandler = require("../util/errorHandler"),
+    _ = require("lodash");
 
 function matchController() {
     return {
@@ -22,7 +23,7 @@ module.exports = matchController();
  * @param next
  */
 function listMatches(req, res, next) {
-    Match.find({}).populate("users").exec(function(err, matches) {
+    Match.find({}).populate("users questions scores").exec(function(err, matches) {
         if(err) return next(err);
         res.json(matches);
     });
@@ -38,7 +39,7 @@ function listMatches(req, res, next) {
 function indexMatches(req, res, next) {
     var matchId = req.params.id || null;
     if(!matchId) next(errorHandler(404, "Not found"));
-    Match.findOne({ _id: matchId }).populate("users questions").exec(function(err, match) {
+    Match.findOne({ _id: matchId }).populate("users questions scores").exec(function(err, match) {
         if(err) return next(err);
         if(match.length == 0) return next(errorHandler(404, "Match not found"));
         res.json(match);
@@ -81,9 +82,13 @@ function updateMatches(req, res, next) {
     if(!matchId) next(errorHandler(404, "Not found"));
     Match.findOne({ _id: matchId }, function(err, match) {
         if(err) return next(err);
-        if(match.length == 0) return next(errorHandler(404, "Match not found"));
+        if(match.length === 0) return next(errorHandler(404, "Match not found"));
         for(var member in req.body) {
-            match[member] = req.body[member];
+            if(member == "questions" || member == "users" || member == "scores"){
+                match[member] = _.map(req.body[member], function(el) { return el._id; });
+            } else {
+                match[member] = req.body[member];
+            }
         }
         match.save(function(err) {
             if(err) return next(err);

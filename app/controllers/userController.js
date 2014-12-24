@@ -1,5 +1,6 @@
 var User = require("../models/users"),
     Match = require("../models/matches"),
+    Score = require("../models/scores"),
     errorHandler = require("../util/errorHandler");
 
 function userController() {
@@ -22,7 +23,7 @@ module.exports = userController();
  * @param next
  */
 function listUsers(req, res, next) {
-    User.find({}).populate("matches").exec(function(err, users) {
+    User.find({}).populate("matches scores").exec(function(err, users) {
         if(err) return next(err);
         res.json(users);
     });
@@ -38,7 +39,7 @@ function listUsers(req, res, next) {
 function indexUsers(req, res, next) {
     var userId = req.params.id || null;
     if(!userId) next(errorHandler(404, "Not found"));
-    User.findOne({ _id: userId }).populate("matches").exec(function(err, user) {
+    User.findOne({ _id: userId }).populate("matches scores").exec(function(err, user) {
         if(err) return next(err);
         if(user.length == 0) return next(errorHandler(404, "User not found"));
         res.json(user);
@@ -72,38 +73,59 @@ function createUsers(req, res, next) {
 function updateUsers(req, res, next) {
     var userId = req.params.id || null;
     if(!userId) next(errorHandler(404, "Not found"));
-    User.findOne({ _id: userId }, function(err, user) {
+    User.findOne({ _id: userId }).populate("matches scores").exec(function(err, user) {
         if(err) return next(err);
-        if(user.length == 0) return next(errorHandler(404, "User not found"));
+        if(user.length === 0) return next(errorHandler(404, "User not found"));
         user.username = req.body.username;
         user.password = req.body.password;
-        user.syncMatches(req.body.matches, function(matches, exMatches) {
+        user.syncMatches(req.body.matches, function(matches, exMatches, updatedUser) {
             for(var i =0 ; i < matches.length; i++){
                 Match.findOne({ _id: matches[i]._id }).populate("users").exec(function(err, match) {
-                    if(match != null) {
-                        match.users.push(user._id);
-                        match.save(function (err) {
+                    if(match !== null) {
+                        match.users.push(updatedUser._id);
+
+                        // create score for a user
+                        var score = new Score({score: 0, user: updatedUser._id, match: match._id});
+                        score.save(function (err, score) {
                             if (err) return next(err);
+                            updatedUser.scores.push(score._id);
+                            updatedUser.save();
+                            match.scores.push(score._id);
+                            match.save(function (err) {
+                                if (err) return next(err);
+                            });
                         });
+                        
                     }
                 });
             }
-            for(var i =0 ; i < exMatches.length; i++){
-                Match.findOne({ _id: exMatches[i] }).populate("users").exec(function(err, match) {
+            for(var j =0 ; j < exMatches.length; j++){
+                Match.findOne({ _id: exMatches[j] }).populate("users scores").exec(function(err, match) {
                     match.users.pull(user._id);
-                    match.save(function (err) {
-                        if(err) return next(err);
-                    })
+
+                    // remove score for a user with an execluded match
+                    Score.findOneAndRemove({ user: updatedUser._id, match: match._id }, function (err, score) {
+                        if (err) return;
+                        match.scores.pull(score._id);
+                        updatedUser.scores.pull(score._id);
+                        updatedUser.save();
+
+                        match.save(function (err) {
+                            if(err) return next(err);
+                        });
+                    });
+                    
                 });
             }
-        });
-        user.save(function(err) {
-            if(err) return next(err);
-            res.json({
-                success: true,
-                user: user
+            updatedUser.save(function(err, savedUser) {
+                if(err) return next(err);
+                res.json({
+                    success: true,
+                    user: savedUser
+                });
             });
-        })
+        });
+        
     });
 }
 

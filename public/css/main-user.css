@@ -1,0 +1,22 @@
+body {
+	padding-top: 50px;
+	font-size: 30px;
+}
+
+.question-content {
+	margin-bottom: 30px;
+	font-size: 40px;
+	padding: 10px;
+	border: 1px solid brown;
+	border-radius: 5px;
+}
+
+.question-answers td {
+	padding: 10px;
+	margin-bottom: 20px;
+}
+
+.answer-radio {
+	width: 25px;
+	height: 25px;
+}

@@ -1,5 +1,6 @@
 var frontPageController = function($scope, User) {
     $scope.users = User.query({});
+  
 };
 
 angular.module("userMain")

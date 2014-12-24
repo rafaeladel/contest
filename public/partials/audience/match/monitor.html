@@ -1,0 +1,45 @@
+<div ng-show="!showFinalResult">
+    <div>
+        <p>{{ question.question }}</p>
+    </div>
+
+    <div>
+        <ul ng-repeat="answer in question.answers">
+            <li><p>{{ answer.content }}</p></li>
+        </ul>
+    </div>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <td>user</td>
+                <td>answered?</td>
+                <td>result</td>
+            </tr>
+        </thead>
+        <tbody ng-repeat="user in match.users">
+            <tr>
+                <td><p>{{ user.username }}</p></td>
+                <td><p ng-show="users_ready.indexOf(user._id) > -1">{{ answers[user._id].content }}</p></td>
+                <td><p ng-show="users_ready.indexOf(user._id) > -1 && answers[user._id].is_true && showResult">✓</p></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div ng-show="showFinalResult">
+    <table border="1">
+        <thead>
+            <tr>
+                <td>user</td>
+                <td>score</td>
+            </tr>
+        </thead>
+        <tbody ng-repeat="score in scores">
+            <tr>
+                <td><p>{{ score.user.username }}</p></td>
+                <td><p>{{ score.score }}</p></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

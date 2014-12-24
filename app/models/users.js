@@ -24,16 +24,19 @@ var usersSchema = new Schema({
 usersSchema.methods.addMatch = function (match, callback) {
     this.matches.push(match._id);
     match.users.push(this._id);
-    callback(match)
+    callback(match);
 };
 
 usersSchema.methods.syncMatches = function (matches, callback) {
+    //matches to remove from users
     var exMatches = _.difference(this.matches, matches);
+    
     this.matches = [];
     for(var i = 0; i < matches.length; i++) {
         this.matches.push(matches[i]._id);
     }
-    callback(matches, exMatches);
+    callback(matches, exMatches, this);
+
 };
 
 module.exports = mongoose.model("users", usersSchema);

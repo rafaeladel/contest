@@ -8,6 +8,7 @@ var express = require("express"),
     params = require("./config/parameters"),
     contestRouter = require("./routes/contestRouter"),
     matchRouter = require("./routes/matchRouter"),
+    scoreRouter = require("./routes/scoreRouter"),
     questionRouter = require("./routes/questionRouter"),
     userRouter = require("./routes/userRouter");
 
@@ -22,6 +23,7 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 
 app.use("/", contestRouter);
 app.use("/", matchRouter);
+app.use("/", scoreRouter);
 app.use("/", questionRouter);
 app.use("/", userRouter);
 
@@ -32,6 +34,10 @@ app.use("/partials", express.static(path.join(__dirname, "../public/partials")))
 
 app.use("/admin", function(req, res, next) {
     res.sendFile(path.resolve(__dirname, "..", "public/partials/admin/index.html"));
+});
+
+app.use("/audience", function(req, res, next) {
+    res.sendFile(path.resolve(__dirname, "..", "public/partials/audience/index.html"));
 });
 
 app.use("*", function(req, res, next) {

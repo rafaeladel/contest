@@ -1,18 +1,11 @@
 <!DOCTYPE html>
-<html ng-app="userMain">
+<html ng-app="audienceMain">
 <head>
     <title>Hello</title>
     <base href="/">
-   	<link rel="stylesheet" href="../../libs/bootstrap/dist/css/bootstrap.min.css" /> 
-   	<link rel="stylesheet" href="../../libs/bootstrap-rtl/dist/css/bootstrap-rtl.min.css" /> 
-   	<link rel="stylesheet" href="../css/main-user.css" /> 
 </head>
 <body>
-
-<nav class="nav navbar-inverse navbar-fixed-top" role="navigation">
-
-</nav>
-<div ng-view class="container"></div>
+<div ng-view></div>
 
 <script src="../../libs/angular/angular.js"></script>
 <script src="../../libs/angular-route/angular-route.js"></script>
@@ -22,15 +15,9 @@
 <script src="/socket.io/socket.io.js"></script>
 
 <script src="../../js/shared/sharedMain.js"></script>
-<script src="../../js/user/userMain.js"></script>
+<script src="../../js/audience/audienceMain.js"></script>
 
-
-<script src="../../js/user/controllers/main/frontPageController.js"></script>
-<script src="../../js/user/controllers/match/frontMatchController.js"></script>
-<script src="../../js/user/controllers/profile/frontProfileController.js"></script>
-
-<script src="../../js/user/directives/keypress-answer.js"></script>
-<script src="../../js/user/directives/countdown.js"></script>
+<script src="../../js/audience/controllers/match/audienceMatchController.js"></script>
 
 <script src="../../js/shared/factories/contestFactory.js"></script>
 <script src="../../js/shared/factories/questionFactory.js"></script>

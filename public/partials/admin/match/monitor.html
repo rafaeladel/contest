@@ -1,0 +1,36 @@
+<div>
+    <p>{{ question.question }}</p>
+</div>
+
+<div>
+    <ul ng-repeat="answer in question.answers">
+        <li><p>{{ answer.content }}</p></li>
+    </ul>
+</div>
+
+<table border="1">
+    <thead>
+        <tr>
+            <td>user</td>
+            <td>answered?</td>
+            <td>result</td>
+            <td>score</td>
+        </tr>
+    </thead>
+    <tbody ng-repeat="user in match.users">
+        <tr>
+            <td><p>{{ user.username }}</p></td>
+            <td><p ng-show="users_ready.indexOf(user._id) > -1">{{ answers[user._id].content }}</p></td>
+            <td><p ng-show="users_ready.indexOf(user._id) > -1 && answers[user._id].is_true && showResult">✓</p></td>
+            <td><p>{{ scores[user._id] }}</p></td>
+        </tr>
+    </tbody>
+</table>
+
+<div>
+    <button ng-show="countdown.init || countdown.stopped" ng-click="startStopwatch()">Start</button>
+    <button ng-show="countdown.started" ng-click="stopStopwatch()">Stop</button>
+    <button ng-show="users_ready.length == match.users.length" ng-click="checkAnswers()">Answer</button>
+    <button ng-show="!matchEnded && users_ready.length == match.users.length" ng-click="nextQuestion()">Next</button>
+    <button ng-show="matchEnded && users_ready.length == match.users.length" ng-click="getResults()">Result</button>
+</div>

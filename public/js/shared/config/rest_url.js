@@ -13,6 +13,14 @@ var urls = {
         edit: "/api/matches/:id",
         delete: "/api/matches/:id"
     },
+    score: {
+        list: "/api/scores",
+        index: "/api/scores/:id",
+        add: "/api/user/:user_id/match/:match_id/scores/add",
+        edit: "/api/user/:user_id/match/:match_id/scores/edit",
+        delete: "/api/scores/:id",
+        getSpecific: "/api/scores/user/:user_id/match/:match_id"
+    },
     question: {
         list: "/api/questions",
         index: "/api/questions/:id",

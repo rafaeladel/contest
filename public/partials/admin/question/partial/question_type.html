@@ -6,15 +6,15 @@
 <div ng-show="show_mcq">
     <ul>
         <li>
-            <input type="radio" name="mcq_correct" ng-model="question.answers[0].is_true"  value="true"/>
+            <input type="radio" name="mcq_correct" ng-model="question.answers[0].is_true"  value="1"/>
             <input type="text" ng-model="question.answers[0].content" />
         </li>
         <li>
-            <input type="radio"  name="mcq_correct" ng-model="question.answers[1].is_true" value="true"/>
+            <input type="radio"  name="mcq_correct" ng-model="question.answers[1].is_true" value="1"/>
             <input type="text" ng-model="question.answers[1].content" />
         </li>
         <li>
-            <input type="radio" name="mcq_correct" ng-model="question.answers[2].is_true" value="true"/>
+            <input type="radio" name="mcq_correct" ng-model="question.answers[2].is_true" value="1"/>
             <input type="text" ng-model="question.answers[2].content"/>
         </li>
     </ul>
@@ -23,11 +23,11 @@
     <ul>
         <li>
             <input type="radio" id="tf_t" name="tf_correct" ng-model="question.answers[0].is_true" value="true">
-            <label for="tf_t">True</label>
+            <label for="tf_t">صح</label>
         </li>
         <li>
             <input type="radio" id="tf_f" name="tf_correct" ng-model="question.answers[1].is_true" value="true">
-            <label for="tf_f">False</label>
+            <label for="tf_f">خطأ</label>
         </li>
     </ul>
 </div>

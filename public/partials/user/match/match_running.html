@@ -1,1 +1,33 @@
-<p>{{ question.question }}</p>
+<div keypress-events>
+	<div class="row question-content bg-warning">
+	    <p>{{ question.question }}</p>
+	</div>
+
+	<div class="question-answers">
+		<form>
+		    <table ng-repeat="answer in question.answers">
+		        <tr ng-class="{'bg-success': answer.is_true && showResult, 'bg-warning': answer.content == selected_answer.content && !selected_answer.is_true && showResult }">
+		            <td>
+		            	<input 	ng-disabled="showResult " 
+		            			ng-checked="$index + 1 == key"
+		            			ng-click="submitAnswer()"
+		            			ng-model="$parent.selected_answer"
+		            			ng-value="answer"
+		            			class="radio answer-radio" type="radio" name="answer" id="answer_{{ answer.content }}" />
+	            	</td>
+		            <td>
+		            	<label for="answer_{{ answer.content }}">{{ answer.content }}</label>
+	            	</td>
+		        </tr>
+		    </table>
+		</form>
+	</div>
+
+	<div ng-show="showResult">
+		<p ng-show="selected_answer.is_true">اجابة صحيحة!</p>
+		<p ng-show="!selected_answer.is_true">اجابة خاطئة!</p>
+	</div>
+</div>
+
+
+<!-- <countdown interval="1000" question-type="question.questionType" start="countdown" selected-answer="selected_answer" on-finish="showResult = true"></countdown> -->

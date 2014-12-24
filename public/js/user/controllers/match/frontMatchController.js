@@ -1,32 +1,90 @@
 var frontMatchLandingController = function($scope, $routeParams, mySocket, User, Match, $location) {
-    $scope.user = User.get({ id: $routeParams.id });
+    $scope.user = User.get({ id: $routeParams.id }, function() {
+        mySocket.emit("match_landing_in", $scope.user);
+
+        mySocket.on("socket:match_are_u_in", function(data) {
+            mySocket.emit("match_landing_in", $scope.user);
+        });
+
+        mySocket.on("socket:match_start", function(data) {
+            $location.path("/user/"+$scope.user._id+"/match/"+$scope.match._id+"/stage/"+data.stage);
+        });
+
+        mySocket.on("disconnect", function() {
+            mySocket.emit("match_landing_in", $scope.user);
+        });
+    });
     $scope.match = Match.get({ id: $routeParams.match_id });
 
-    mySocket.emit("match_landing_in", $scope.user);
-    mySocket.on("socket:match_start", function(data) {
-        $location.path("/user/"+$scope.user._id+"/match/"+$scope.match._id+"/start");
-    });
 
-    mySocket.on("socket:match_are_u_in", function(data) {
-        mySocket.emit("match_landing_in", $scope.user);
-    });
 };
 
-var frontMatchStartController = function($scope, $routeParams, mySocket, User, Match, $location) {
+var frontMatchResultController = function($scope, $routeParams, mySocket, Score, $location)
+{
+    $scope.score = Score.getSpecific(function(scores){
+    });
+    // $scope.match = Match.get({ id: $routeParams.match_id }, function(match) {
+    //     console.log(match);
+    // });
+};
+
+var frontMatchStartController = function($scope, $routeParams, mySocket, User, Match, Score, $location, $route, $rootScope) {
     $scope.user = User.get({ id: $routeParams.id });
+    $scope.selected_answer = {};
+    $scope.showResult = false;
+    $scope.key = null;
+
+    $scope.countdown = null;
+
     $scope.match = Match.get({ id: $routeParams.match_id }, function (match) {
-        if(match.stage == match.questions.length) {
-            //trigger match_end event
+        //getting question according to the current stage
+        var stage = $routeParams.stage - 1;
+        if(stage < match.questions.length) {
+            $scope.question = match.questions[stage];
+            match.stage = stage;
+
+            Match.update({ id: match._id }, match, function(val, res) {});
         } else {
-            $scope.question = match.questions[match.stage];
-            match.stage++;
-            console.log(match);
-            Match.update({ id: match._id}, match, function(val, res) {
-                console.log(val);
-            });
 
         }
+    });
 
+    mySocket.on("socket:match_start", function(data) {
+        $location.path("/user/"+$scope.user._id+"/match/"+$scope.match._id+"/stage/"+data.stage);
+    });
+
+    $scope.submitAnswer = function () {
+        if($scope.selected_answer.is_true == 1) {
+            Score.update({}, { score: 10 }, function(val, res){});
+        }
+        mySocket.emit("user_answered", { user: $scope.user, answer: $scope.selected_answer});
+    };
+
+
+    $rootScope.$on('keypress', function (evt, obj, key) {
+        $scope.$apply(function () {
+            if(key <= Object.keys($scope.question.answers).length) {
+                $scope.key = key;
+                $scope.submitAnswer($scope.question.answers[key - 1]);
+            }
+        });
+    });
+
+    mySocket.on("socket:show_final_result", function(data) {
+        $location.path("/user/"+$scope.user._id+"/match/"+$scope.match._id+"/result");
+    });
+
+
+    mySocket.on("socket:start_stopwatch", function(data) {
+        $scope.countdown = 0;
+    });
+
+    mySocket.on("socket:stop_stopwatch", function(data) {
+        $scope.countdown = 1;
+    });
+
+    mySocket.on("socket:show_result", function(data) {
+        $scope.showResult = true;
     });
 
     mySocket.on("socket:match_are_u_in", function(data) {
@@ -38,4 +96,5 @@ var frontMatchStartController = function($scope, $routeParams, mySocket, User, M
 
 angular.module("userMain")
     .controller("frontMatchLandingController", ["$scope", "$routeParams", "mySocket", "User", "Match", "$location", frontMatchLandingController])
-    .controller("frontMatchStartController", ["$scope", "$routeParams", "mySocket", "User", "Match", "$location", frontMatchStartController]);
+    .controller("frontMatchResultController", ["$scope", "$routeParams", "mySocket", "Score", "$location", frontMatchResultController])
+    .controller("frontMatchStartController", ["$scope", "$routeParams", "mySocket", "User", "Match", "Score", "$location", "$route", "$rootScope", frontMatchStartController]);

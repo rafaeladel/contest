@@ -1,5 +1,6 @@
 var Contest = require("../models/contests"),
-    errorHandler = require("../util/errorHandler");
+    errorHandler = require("../util/errorHandler"),
+    _ = require("lodash");
 
 function contestController() {
     return {
@@ -93,12 +94,19 @@ function updateContests(req, res, next) {
 
 
 function manageQuestions(req, res, next) {
-    Contest.findOne({_id: req.params.contest_id}, function (err, contest) {
+    Contest.findOne({_id: req.params.contest_id}).populate("matches").exec(function (err, contest) {
         contest.questions = [];
+        _.forEach(contest.matches, function (match) { match.questions = []; });
         for (var i = 0; i < req.body.length; i++) {
             contest.questions.push(req.body[i]._id);
+            for(var k = 0; k < contest.matches.length ; k++) {
+                contest.matches[k].questions.push(req.body[i]._id);
+            }
         }
         contest.save(function (err, contest) {
+            _.forEach(contest.matches, function (match) {
+                match.save(function (err, match) {});
+            });
             res.json({
                 success: true,
                 contest: contest

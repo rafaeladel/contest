@@ -15,9 +15,13 @@ angular.module("userMain", ["sharedMain", "ngRoute", "ngResource"])
                 controller: "frontMatchLandingController",
                 templateUrl: "../../partials/user/match/match_landing.html"
             })
-            .when("/user/:id/match/:match_id/start", {
+            .when("/user/:id/match/:match_id/stage/:stage", {
                 controller: "frontMatchStartController",
                 templateUrl: "../../partials/user/match/match_running.html"
+            })
+            .when("/user/:id/match/:match_id/result", {
+                controller: "frontMatchResultController",
+                templateUrl: "../../partials/user/match/match_result.html"
             })
         ;
 

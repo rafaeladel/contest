@@ -11,12 +11,12 @@ var questionType = function () {
                 scope.show_tf = val == 1;
                 if (val == 1) {
                     scope.question.answers = [
-                        { content: "true" },
-                        { content: "false"}
-                    ]
+                        { content: "صح" },
+                        { content: "خطأ"}
+                    ];
                 }
             });
         }
-    }
+    };
 };
 angular.module("adminMain").directive("questionType", questionType);

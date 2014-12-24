@@ -35,9 +35,10 @@ angular.module("adminMain", ["sharedMain", "ngRoute", "ngResource", "checklist-m
                 controller: "matchAddController",
                 templateUrl: "../../partials/admin/match/add.html"
             })
-            .when("/admin/matches/:id", {
-                controller: "matchIndexController",
-                templateUrl: "../../partials/admin/match/index.html"
+            .when("/admin/matches/:id", { controller: "matchIndexController", templateUrl: "../../partials/admin/match/index.html"})
+            .when("/admin/match/:match_id/monitor", {
+                controller: "matchMonitorController" ,
+                templateUrl: "../../partials/admin/match/monitor.html"
             })
             .when("/admin/matches/", {
                 controller: "matchesListController",
