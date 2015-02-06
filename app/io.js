@@ -34,6 +34,10 @@ function initIO(http) {
             socket.broadcast.emit("socket:show_result", data );
         });
 
+        socket.on("show_user_result", function (data) {
+            socket.broadcast.emit("socket:show_user_result", data );
+        });
+
         socket.on("show_final_result", function (data) {
             socket.broadcast.emit("socket:show_final_result", data );
         });

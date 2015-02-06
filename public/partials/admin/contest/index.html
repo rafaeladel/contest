@@ -6,7 +6,7 @@
     <form ng-submit="manageQuestions(selected_questions)">
         <div ng-repeat="question in questions">
             <input id="{{ question._id }}" checklist-model="selected_questions" checklist-value="question" type="checkbox"/>
-            <label for="{{ question._id }}">{{ question.question }}</label>
+            <label for="{{ question._id }}">{{ question.question }} | <span ng-show="question.questionType == 0">MCQ</span><span ng-show="question.questionType == 1">TOF</span></label>
         </div>
         <br/>
         <button type="submit">Save</button>

@@ -6,8 +6,13 @@ var audienceMatchController = function ($scope, mySocket, Score, $location) {
         $scope.answers = [];
         $scope.showResult = false;
         $scope.showFinalResult = false;
+        $scope.countdown = 1;
     });
     
+    $scope.audienceCountdown = function() 
+    {
+        console.log("ended");
+    };
    
     mySocket.on("socket:user_answered", function (data) {
         if($scope.users_ready.indexOf(data.user._id) == -1) {
@@ -20,6 +25,19 @@ var audienceMatchController = function ($scope, mySocket, Score, $location) {
 
     mySocket.on("socket:show_result", function(data) {
         $scope.showResult = true;
+        $scope.countdown = 1;
+    });
+
+    mySocket.on("socket:show_user_result", function(data) {
+        // $scope.showResult = true;
+    });
+
+    mySocket.on("socket:start_stopwatch", function(data) {
+        $scope.countdown = 0;
+    });
+
+    mySocket.on("socket:stop_stopwatch", function(data) {
+        $scope.countdown = 1;
     });
 
     mySocket.on("socket:match_result_audience", function(data) {

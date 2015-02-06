@@ -63,6 +63,7 @@ var matchMonitorController = function ($scope, Contest, Match, Question, mySocke
         }
         mySocket.emit("match_start_audience", { match: match, question: $scope.question });
     });
+    $scope.stopwatchValue = null;
 
     $scope.scores = [];
     $scope.users_ready = [];
@@ -97,7 +98,9 @@ var matchMonitorController = function ($scope, Contest, Match, Question, mySocke
     $scope.checkAnswers = function() {
         $scope.showResult = true;
         mySocket.emit("show_result", true);
+        mySocket.emit("show_user_result", true);
     };
+
     $scope.getResults = function() {
         mySocket.emit("match_result_audience", { match: $scope.match });
 
@@ -106,17 +109,23 @@ var matchMonitorController = function ($scope, Contest, Match, Question, mySocke
 
     $scope.startStopwatch = function() {
         mySocket.emit("start_stopwatch");
+        $scope.stopwatchValue = 0;
         $scope.countdown.started = true;
         $scope.countdown.stopped = false;
         $scope.countdown.init = false;
     };
     $scope.stopStopwatch = function() {
         mySocket.emit("stop_stopwatch");
+        $scope.stopwatchValue = 1;
         $scope.countdown.started = false;
         $scope.countdown.init = false;
         $scope.countdown.stopped = true;
 
     };
+
+    mySocket.on("socket:show_user_result", function(data) {
+        $scope.showResult = true;
+    });
 
     mySocket.on("socket:user_answered", function (data) {
         if($scope.users_ready.indexOf(data.user._id) == -1) {

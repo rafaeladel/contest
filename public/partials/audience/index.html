@@ -3,10 +3,16 @@
 <head>
     <title>Hello</title>
     <base href="/">
+    <link rel="stylesheet" href="../../libs/bootstrap/dist/css/bootstrap.min.css" /> 
+   	<link rel="stylesheet" href="../../libs/bootstrap-rtl/dist/css/bootstrap-rtl.min.css" /> 
+   	<link rel="stylesheet" href="../css/main-user.css" /> 
 </head>
 <body>
-<div ng-view></div>
 
+<div ng-view class=""></div>
+<footer>
+<img src="../../img/logo.jpg"></div>
+</footer>
 <script src="../../libs/angular/angular.js"></script>
 <script src="../../libs/angular-route/angular-route.js"></script>
 <script src="../../libs/angular-resource/angular-resource.js"></script>
@@ -18,6 +24,9 @@
 <script src="../../js/audience/audienceMain.js"></script>
 
 <script src="../../js/audience/controllers/match/audienceMatchController.js"></script>
+
+<script src="../../js/shared/directives/countdown.js"></script>
+
 
 <script src="../../js/shared/factories/contestFactory.js"></script>
 <script src="../../js/shared/factories/questionFactory.js"></script>

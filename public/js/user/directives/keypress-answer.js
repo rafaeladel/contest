@@ -6,7 +6,7 @@ myApp.directive('keypressEvents', ["$document", "$rootScope", function ($documen
 
 	    	var key = String.fromCharCode(e.which);
 	    	if(key == 1 || key == 2 || key == 3) {
-	            $rootScope.$broadcast('keypress', e, String.fromCharCode(e.which));
+	            $scope.$emit('keypress', e, String.fromCharCode(e.which));
 	    	}
 	    });
     }

@@ -1,6 +1,6 @@
 <h2>Questions</h2>
 <ul>
-    <li ng-repeat="question in questions"><a href="/admin/questions/{{question._id}}">{{ question.question }}</a></li>
+    <li ng-repeat="question in questions"><a href="/admin/questions/{{question._id}}">{{ question.question }} | <span ng-show="question.questionType == 0">MCQ</span><span ng-show="question.questionType == 1">TOF</span></a></li>
 </ul>
 
 <a href="/admin/questions/add">Add</a>
